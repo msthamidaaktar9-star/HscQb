@@ -1,0 +1,5 @@
+{
+  "summary":  "100% Offline-Capable Standalone Question Bank HTML file. Contains embedded offline LaTeX parsing engine (supporting vertical fractions, square roots, sub/superscripts, and Greek math symbols), local system Bengali fonts fallbacks, inline vector SVGs, and full question database. Functions completely without internet or external CDN requests.",
+  "updatedAt":  "2026-10-21T02:51:51.336670367Z",
+  "userFacing":  true
+}

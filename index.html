@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="bn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Uddvash-Style Physics Question Bank & Exam Generator</title>
+    <meta name="description" content="Production-ready ID-based question bank with Uddvash 2-column layout, interactive practice mode, exam paper generator, LaTeX rendering, and A4 PDF print export." />
+    <meta property="og:title" content="Uddvash-Style Physics Question Bank & Exam Generator" />
+    <meta property="og:description" content="Production-ready ID-based question bank with Uddvash 2-column layout, interactive practice mode, exam paper generator, LaTeX rendering, and A4 PDF print export." />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#c0392b" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    
+    <!-- Google Fonts: Hind Siliguri (Bengali), Plus Jakarta Sans, JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- MathJax 3 Configuration -->
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['\\(', '\\)'], ['$', '$']],
+          displayMath: [['\\[', '\\]'], ['$$', '$$']],
+          processEscapes: true,
+          packages: {'[+]': ['noerrors']}
+        },
+        options: {
+          skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        },
+        svg: {
+          fontCache: 'global'
+        },
+        startup: {
+          typeset: false
+        }
+      };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  </head>
+  <body class="bg-slate-50 text-slate-900 font-['Hind_Siliguri',sans-serif] antialiased">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

@@ -1,0 +1,72 @@
+name: Build Android APK (অটোমেটিক অ্যান্ড্রয়েড APK বিল্ডার)
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch: # Allows manual trigger directly from phone browser!
+
+jobs:
+  build-apk:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: |
+          npm ci --legacy-peer-deps || npm install --legacy-peer-deps
+          npm install @capacitor/core @capacitor/cli @capacitor/android --legacy-peer-deps
+
+      - name: Build Web Application
+        run: npm run build
+
+      - name: Initialize & Sync Capacitor Android
+        run: |
+          npx cap add android || true
+          npx cap sync android
+
+      - name: Build Debug APK with Gradle
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+
+      - name: Upload APK as Workflow Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Uddvash-Physics-Question-Bank-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 30
+
+      - name: Create GitHub Release with APK
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
+        with:
+          tag_name: v1.0.0
+          name: "Uddvash Physics Question Bank v1.0.0 (Android APK)"
+          body: |
+            ## 📱 Uddvash Physics Question Bank APK
+            স্বয়ংক্রিয়ভাবে গিটহাব একশন দ্বারা প্রস্তুতকৃত অ্যান্ড্রয়েড APK ফাইল।
+            - ১০০% অফলাইন সাপোর্ট
+            - উদ্ভাস ২-কলাম ভিউ
+            - প্র্যাকটিস ও পরীক্ষা মোড
+          files: android/app/build/outputs/apk/debug/app-debug.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

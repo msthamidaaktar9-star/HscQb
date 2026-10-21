@@ -1,0 +1,9 @@
+{
+  "appId": "com.uddvash.physicsqb",
+  "appName": "Uddvash Physics Question Bank",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  }
+}

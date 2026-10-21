@@ -1,0 +1,6 @@
+{
+  "name": "Uddvash-Style Physics Question Bank & Exam Generator",
+  "description": "Production-ready ID-based question bank with Uddvash 2-column layout, interactive practice mode, exam paper generator, LaTeX rendering, and A4 PDF print export.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

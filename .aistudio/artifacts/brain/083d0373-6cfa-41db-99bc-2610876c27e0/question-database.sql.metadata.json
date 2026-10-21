@@ -1,0 +1,5 @@
+{
+  "summary": "ANSI & SQLite compatible SQL database script with DDL schema (CREATE TABLE questions) and DML inserts for all HSC Physics questions. Ready for SQLite (.db), PostgreSQL, MySQL, and Android Room DB.",
+  "updatedAt": "2026-10-21T03:17:30.000000000Z",
+  "userFacing": true
+}

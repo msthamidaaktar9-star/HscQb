@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>উদ্ভাস স্টাইল ফিজিক্স প্রশ্নব্যাংক ও পরীক্ষা জেনারেটর (Uddvash Question Bank)</title>
+  
+  <!-- Bengali & Clean Modern Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- MathJax 3 Configuration & Library -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)'], ['$', '$']],
+        displayMath: [['\\[', '\\]'], ['$$', '$$']],
+        processEscapes: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      svg: { fontCache: 'global' },
+      startup: { typeset: false }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    /* ==========================================================================
+       CSS Variables & Reset
+       ========================================================================== */
+    :root {
+      --uddvash-red: #c0392b;
+      --uddvash-dark-red: #962d22;
+      --uddvash-pink: #fdedec;
+      --uddvash-pink-border: #f5b7b1;
+      --uddvash-orange: #d35400;
+      --bg-canvas: #f8fafc;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --card-bg: #ffffff;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px -2px rgba(0,0,0,0.04);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Hind Siliguri', 'Kalpurush', 'SolaimanLipi', 'Siyam Rupali', 'Vrinda', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg-canvas);
+      color: var(--text-main);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Offline Math Vertical Fractions & Equations */
+    .vfrac {
+      display: inline-flex;
+      flex-direction: column;
+      text-align: center;
+      vertical-align: middle;
+      font-size: 0.88em;
+      line-height: 1.1;
+      margin: 0 3px;
+    }
+    .vnum {
+      border-bottom: 1.5px solid currentColor;
+      padding: 0 3px 1px 3px;
+    }
+    .vden {
+      padding: 1px 3px 0 3px;
+    }
+    .radicand {
+      border-top: 1.5px solid currentColor;
+      padding: 0 2px;
+    }
+
+    /* Container */
+    .app-wrapper {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    /* ==========================================================================
+       Top Navigation & Control Bar (Screen only)
+       ========================================================================== */
+    .top-bar {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 14px 20px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--uddvash-red), var(--uddvash-dark-red));
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 20px;
+      box-shadow: 0 2px 8px rgba(192, 57, 43, 0.3);
+    }
+
+    .brand-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--uddvash-dark-red);
+      line-height: 1.2;
+    }
+
+    .brand-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .top-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: var(--uddvash-red);
+      color: #ffffff;
+    }
+    .btn-primary:hover {
+      background: var(--uddvash-dark-red);
+      box-shadow: 0 2px 6px rgba(192, 57, 43, 0.35);
+    }
+
+    .btn-outline {
+      background: #ffffff;
+      color: var(--text-main);
+      border-color: var(--border-color);
+    }
+    .btn-outline:hover {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+    }
+
+    .btn-sm {
+      padding: 4px 10px;
+      font-size: 0.8rem;
+    }
+
+    /* Filter Deck */
+    .filter-deck {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 18px 20px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      align-items: end;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .filter-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 8px 12px;
+      font-size: 0.9rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      background-color: #f8fafc;
+      color: var(--text-main);
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+    .form-control:focus {
+      border-color: var(--uddvash-red);
+      background-color: #ffffff;
+      box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.15);
+    }
+
+    .id-tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .id-chip {
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 2px 8px;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      cursor: pointer;
+      color: #334155;
+      font-weight: 600;
+      transition: all 0.15s;
+    }
+    .id-chip:hover, .id-chip.active {
+      background: var(--uddvash-red);
+      color: #ffffff;
+      border-color: var(--uddvash-dark-red);
+    }
+
+    /* Stats Bar */
+    .status-counter-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 4px 14px 4px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* ==========================================================================
+       UDDVASH STYLE 2-COLUMN VIEW (View 1 - Authentic Publication Look)
+       ========================================================================== */
+    .uddvash-view {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      box-shadow: var(--shadow-md);
+      border-radius: var(--radius-sm);
+      padding: 24px;
+      margin-bottom: 30px;
+    }
+
+    /* Uddvash Banner */
+    .uddvash-banner {
+      background: linear-gradient(135deg, #c0392b 0%, #962d22 100%);
+      color: #ffffff;
+      padding: 16px 20px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .uddvash-banner-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .uddvash-banner-meta {
+      font-size: 0.9rem;
+      opacity: 0.95;
+      font-weight: 500;
+    }
+
+    /* 2 Column Layout with vertical divider */
+    .uddvash-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      position: relative;
+    }
+
+    .uddvash-column {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .uddvash-column-divider {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 1px;
+      background-color: var(--uddvash-red);
+      transform: translateX(-50%);
+    }
+
+    /* Question Card within Uddvash View */
+    .uddvash-card {
+      border: 1px solid #f1f5f9;
+      border-radius: 4px;
+      padding: 14px;
+      background: #ffffff;
+      page-break-inside: avoid;
+      break-inside: avoid;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+
+    .topic-ribbon {
+      display: inline-block;
+      background: var(--uddvash-red);
+      color: #ffffff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 12px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+      letter-spacing: 0.3px;
+    }
+
+    .question-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .question-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--uddvash-orange);
+      color: white;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .board-tag {
+      color: var(--uddvash-red);
+      font-weight: 700;
+      font-size: 0.8rem;
+    }
+
+    .stem-text {
+      font-size: 0.95rem;
+      color: #1e293b;
+      margin-bottom: 12px;
+      text-align: justify;
+    }
+
+    .diagram-box {
+      margin: 12px 0;
+      padding: 8px;
+      background: #ffffff;
+      border: 1px dashed #cbd5e1;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    .concept-box {
+      background: var(--uddvash-pink);
+      border: 1px solid var(--uddvash-pink-border);
+      border-radius: 4px;
+      padding: 10px 14px;
+      margin: 12px 0;
+      font-size: 0.85rem;
+      color: #78281f;
+    }
+
+    .question-prompts {
+      font-weight: 600;
+      font-size: 0.92rem;
+      margin: 10px 0;
+      color: #0f172a;
+      white-space: pre-line;
+    }
+
+    /* MCQ Option List */
+    .mcq-options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 10px 0;
+    }
+
+    .mcq-option-item {
+      padding: 6px 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-size: 0.85rem;
+      background: #f8fafc;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .solution-box {
+      background: #fdedec;
+      border: 1px solid #f5b7b1;
+      border-radius: 4px;
+      padding: 12px 14px;
+      margin-top: 12px;
+      font-size: 0.88rem;
+    }
+
+    .solution-header {
+      font-weight: 700;
+      color: var(--uddvash-dark-red);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .uddvash-footer-branding {
+      margin-top: 28px;
+      padding-top: 14px;
+      border-top: 1px dashed #cbd5e1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* ==========================================================================
+       INTERACTIVE PRACTICE MODE (View 2)
+       ========================================================================== */
+    .practice-view {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .practice-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      transition: border-color 0.2s ease;
+    }
+    .practice-card:hover {
+      border-color: #cbd5e1;
+    }
+
+    .interactive-mcq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    .interactive-option-btn {
+      text-align: left;
+      padding: 10px 14px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      background: #ffffff;
+      font-size: 0.9rem;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.15s ease;
+    }
+    .interactive-option-btn:hover:not(:disabled) {
+      border-color: #94a3b8;
+      background: #f8fafc;
+    }
+    .interactive-option-btn.correct {
+      border-color: #16a34a !important;
+      background-color: #f0fdf4 !important;
+      color: #166534 !important;
+      font-weight: 600;
+    }
+    .interactive-option-btn.wrong {
+      border-color: #dc2626 !important;
+      background-color: #fef2f2 !important;
+      color: #991b1b !important;
+    }
+
+    .toggle-sol-btn {
+      margin-top: 14px;
+      padding: 8px 16px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      color: #334155;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+    .toggle-sol-btn:hover {
+      background: #f1f5f9;
+      color: var(--uddvash-dark-red);
+      border-color: var(--uddvash-red);
+    }
+
+    /* ==========================================================================
+       EXAM PAPER GENERATOR MODE (View 3 - Clean test paper)
+       ========================================================================== */
+    .exam-view {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: var(--radius-sm);
+      padding: 30px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .exam-header {
+      text-align: center;
+      border-bottom: 2px solid #0f172a;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+
+    .exam-inst-name {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #0f172a;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .exam-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .exam-meta-row {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #475569;
+    }
+
+    .student-fields-box {
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      padding: 10px 14px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      gap: 12px;
+      background: #fafafa;
+    }
+
+    .exam-question-item {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px dashed #e2e8f0;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .exam-q-number {
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #0f172a;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* ==========================================================================
+       Modal Styles
+       ========================================================================== */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+    .modal-backdrop.active {
+      display: flex;
+    }
+
+    .modal-dialog {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 650px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 24px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #64748b;
+    }
+
+    /* ==========================================================================
+       A4 Print Optimization Styles
+       ========================================================================== */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 8mm 8mm 10mm 8mm;
+      }
+
+      body {
+        background-color: #ffffff !important;
+        font-size: 10.5pt !important;
+        color: #000000 !important;
+        line-height: 1.35 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .no-print,
+      .top-bar,
+      .filter-deck,
+      .status-counter-bar,
+      .modal-backdrop,
+      .toggle-sol-btn,
+      button {
+        display: none !important;
+      }
+
+      .app-wrapper {
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+
+      .uddvash-view,
+      .exam-view,
+      .practice-card {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+
+      .uddvash-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 16px !important;
+      }
+
+      .uddvash-column-divider {
+        display: block !important;
+        background-color: #c0392b !important;
+      }
+
+      .uddvash-banner {
+        background: #c0392b !important;
+        color: #ffffff !important;
+        margin-bottom: 14px !important;
+        padding: 10px 14px !important;
+      }
+
+      .concept-box,
+      .solution-box {
+        background-color: #fdedec !important;
+        border-color: #f5b7b1 !important;
+      }
+
+      .topic-ribbon {
+        background-color: #c0392b !important;
+        color: #ffffff !important;
+      }
+
+      .uddvash-card,
+      .exam-question-item,
+      .practice-card {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        margin-bottom: 12px !important;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .uddvash-grid {
+        grid-template-columns: 1fr;
+      }
+      .uddvash-column-divider {
+        display: none;
+      }
+      .mcq-options-grid,
+      .interactive-mcq-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-wrapper">
+
+    <!-- Top App Header & Controls -->
+    <header class="top-bar no-print">
+      <div class="brand-section">
+        <div class="brand-icon">উ</div>
+        <div>
+          <h1 class="brand-title">উদ্ভাস ফিজিক্স প্রশ্নব্যাংক ও পরীক্ষা ব্যবস্থা</h1>
+          <div class="brand-subtitle">HSC & Admission Physics • Question Bank & PDF Generator</div>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <!-- Theme / View Switcher Dropdown -->
+        <select id="themeSelect" class="form-control" style="width: auto; font-weight: 600;">
+          <option value="uddvash">🔴 উদ্ভাস ২-কলাম ভিউ (Uddvash 2-Col)</option>
+          <option value="practice">💡 ইন্টারঅ্যাক্টিভ অনুশীলন মোড (Practice)</option>
+          <option value="exam">📝 প্রশ্নপত্র মোড (Exam Paper Only)</option>
+        </select>
+
+        <button id="addQBtn" class="btn btn-outline">
+          ➕ প্রশ্ন যোগ করুন
+        </button>
+
+        <button id="printBtn" class="btn btn-primary">
+          🖨️ A4 PDF প্রিন্ট করুন
+        </button>
+      </div>
+    </header>
+
+    <!-- Filter Deck & Search -->
+    <section class="filter-deck no-print">
+      <!-- ID Input / Selector -->
+      <div class="filter-group">
+        <label class="filter-label">প্রশ্ন ID দ্বারা নির্বাচন (e.g. q01, mcq01)</label>
+        <input type="text" id="idInput" class="form-control" placeholder="যেমন: q01, mcq01, q02" />
+        <div id="quickIdChips" class="id-tag-list"></div>
+      </div>
+
+      <!-- Real-time Search -->
+      <div class="filter-group">
+        <label class="filter-label">প্রশ্ন বা টপিক খুঁজুন</label>
+        <input type="text" id="searchInput" class="form-control" placeholder="শব্দ দিয়ে সার্চ করুন..." />
+      </div>
+
+      <!-- Chapter Filter -->
+      <div class="filter-group">
+        <label class="filter-label">অধ্যায় (Chapter)</label>
+        <select id="chapterSelect" class="form-control">
+          <option value="all">সকল অধ্যায় (All Chapters)</option>
+        </select>
+      </div>
+
+      <!-- Type Filter -->
+      <div class="filter-group">
+        <label class="filter-label">প্রশ্নের ধরন (Type)</label>
+        <select id="typeSelect" class="form-control">
+          <option value="all">সব ধরন (CQ + MCQ)</option>
+          <option value="CQ">সৃজনশীল প্রশ্ন (CQ)</option>
+          <option value="MCQ">বহুনির্বাচনি প্রশ্ন (MCQ)</option>
+        </select>
+      </div>
+
+      <!-- Reset Filters Button -->
+      <div class="filter-group" style="align-self: flex-end;">
+        <button id="resetFiltersBtn" class="btn btn-outline" style="width: 100%;">
+          🔄 ফিল্টার রিসেট
+        </button>
+      </div>
+    </section>
+
+    <!-- Status Bar -->
+    <div class="status-counter-bar no-print">
+      <div>
+        মোট প্রদর্শিত প্রশ্ন: <strong id="questionCount">0</strong> টি
+      </div>
+      <div>
+        বর্তমান ভিউ: <span id="currentViewIndicator" style="font-weight: 600; color: var(--uddvash-red);">উদ্ভাস ২-কলাম</span>
+      </div>
+    </div>
+
+    <!-- Main Content Rendering Target -->
+    <main id="mainContainer">
+      <!-- Injected via JavaScript based on active theme -->
+    </main>
+
+  </div>
+
+  <!-- Add Question Modal -->
+  <div id="questionModal" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--uddvash-dark-red);">নতুন প্রশ্ন যোগ করুন</h3>
+        <button id="closeModalBtn" class="modal-close">&times;</button>
+      </div>
+      <form id="addQuestionForm">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+          <div>
+            <label class="filter-label">প্রশ্ন ID</label>
+            <input type="text" id="newId" class="form-control" placeholder="q04" required />
+          </div>
+          <div>
+            <label class="filter-label">ধরন</label>
+            <select id="newType" class="form-control">
+              <option value="CQ">CQ (সৃজনশীল)</option>
+              <option value="MCQ">MCQ (বহুনির্বাচনি)</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-bottom: 12px;">
+          <label class="filter-label">অধ্যায় ও টপিক</label>
+          <input type="text" id="newChapter" class="form-control" placeholder="Chapter 05: Work, Energy & Power" required />
+        </div>
+        <div style="margin-bottom: 12px;">
+          <label class="filter-label">বোর্ড ট্যাগ</label>
+          <input type="text" id="newBoard" class="form-control" placeholder="[Dhaka B'24]" />
+        </div>
+        <div style="margin-bottom: 12px;">
+          <label class="filter-label">উদ্দীপক (LaTeX সমর্থিত)</label>
+          <textarea id="newStem" class="form-control" rows="3" placeholder="\(50\text{ kg}\) ভরের..." required></textarea>
+        </div>
+        <div style="margin-bottom: 12px;">
+          <label class="filter-label">প্রশ্ন (Question Parts)</label>
+          <textarea id="newQuestionText" class="form-control" rows="2" placeholder="(গ) বল নির্ণয় কর।&#10;(ঘ) বিশ্লেষণ কর।" required></textarea>
+        </div>
+        <div style="margin-bottom: 16px;">
+          <label class="filter-label">সমাধান (Detailed LaTeX Solution)</label>
+          <textarea id="newSolution" class="form-control" rows="4" placeholder="প্রদত্ত বল \(F = ma\)..." required></textarea>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" id="cancelModalBtn" class="btn btn-outline">বাতিল</button>
+          <button type="submit" class="btn btn-primary">সংরক্ষণ করুন</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       Embedded JavaScript Application Logic
+       ========================================================================== -->
+  <script>
+    // 🗄️ 1. JSON Database with realistic physics questions
+    const questionDatabase = [
+      {
+        id: "q01",
+        subject: "HSC Physics 1st Paper",
+        chapter: "Chapter 05: Work, Energy & Power",
+        topic: "T-05: Power & Work along Inclined Plane",
+        type: "CQ",
+        boardTag: "[Ctg.B'24; RB'21; DB'19]",
+        stem: "\\(50\\text{ kg}\\) ভরের একজন শ্রমিক \\(100\\text{ m}\\) দীর্ঘ ও \\(30^\\circ\\) আনত একটি ঘর্ষণযুক্ত ঢালু তলে \\(20\\text{ kg}\\) ভরের একটি বোঝা সমবেগে ঠেলে উপরে তুলছে। তল ও বোঝার মধ্যবর্তী ঘর্ষণ গুণাঙ্ক \\(\\mu = 0.1\\)। অপর একজন শ্রমিক একই ভরের বোঝা একটি সুষম কপিকলের সাহায্যে সরাসরি খাড়াভাবে \\(h = 50\\text{ m}\\) উচ্চতায় উঠাল। উভয় শ্রমিকেরই কাজটি সম্পন্ন করতে \\(2\\text{ min}\\) সময় লাগল। \\([g = 9.8\\text{ ms}^{-2}]\\)",
+        svgDiagram: `<svg viewBox="0 0 360 180" style="width:100%;max-width:300px;display:block;margin:auto;" xmlns="http://www.w3.org/2000/svg">
+          <line x1="20" y1="150" x2="330" y2="150" stroke="#475569" stroke-width="2" />
+          <path d="M 20 150 L 300 150 L 300 30 Z" fill="#f1f5f9" stroke="#334155" stroke-width="2" />
+          <path d="M 70 150 A 50 50 0 0 0 63 131" fill="none" stroke="#c0392b" stroke-width="1.8" />
+          <text x="75" y="142" font-size="12" font-weight="bold" fill="#c0392b">30°</text>
+          <line x1="310" y1="30" x2="310" y2="150" stroke="#2563eb" stroke-dasharray="3,3" stroke-width="1.5" />
+          <text x="318" y="95" font-size="11" font-weight="bold" fill="#2563eb">h = 50m</text>
+          <text x="140" y="70" font-size="12" font-weight="bold" fill="#1e293b" transform="rotate(-23 140 70)">L = 100 m</text>
+          <g transform="translate(170, 85) rotate(-23)">
+            <rect x="-15" y="-18" width="30" height="20" rx="2" fill="#d35400" stroke="#962d22" stroke-width="1.5" />
+            <text x="-9" y="-4" font-size="10" font-weight="bold" fill="#ffffff">20kg</text>
+            <line x1="16" y1="-8" x2="45" y2="-8" stroke="#c0392b" stroke-width="2" />
+            <polygon points="45,-11 51,-8 45,-5" fill="#c0392b" />
+            <text x="48" y="-4" font-size="10" font-weight="bold" fill="#c0392b">F</text>
+          </g>
+          <circle cx="20" cy="150" r="3" fill="#0f172a" /><text x="12" y="165" font-size="12" font-weight="bold" fill="#0f172a">P</text>
+          <circle cx="300" cy="30" r="3" fill="#0f172a" /><text x="305" y="25" font-size="12" font-weight="bold" fill="#0f172a">Q</text>
+        </svg>`,
+        conceptSummary: "💡 মূল সূত্রাবলী: আনত তলে ঘর্ষণযুক্ত গতির ক্ষেত্রে প্রযুক্ত বল \\(F = mg\\sin\\theta + \\mu mg\\cos\\theta\\)। কৃতকাজ \\(W = F \\cdot s\\) এবং গড় ক্ষমতা \\(P = \\frac{W}{t}\\)।",
+        questionText: "(গ) আনত তল বরাবর বোঝাটি টেনে তুলতে ১ম শ্রমিকের প্রযুক্ত বলের মান F নির্ণয় কর। [৩ নম্বর]\n(ঘ) উভয় শ্রমিকের মধ্যে কোন জন কম ক্ষমতা ব্যয়ে Q বিন্দুতে পৌঁছাতে পারবে? গাণিতিক বিশ্লেষণের মাধ্যমে মতামত দাও। [৪ নম্বর]",
+        solution: `\\(\\underline{\\textbf{(গ) এর সমাধান:}}\\\\
+\\) দেওয়া আছে,
+বোঝার ভর, \\(m = 20\\text{ kg}\\)
+আনতি কোণ, \\(\\theta = 30^\\circ\\), ঘর্ষণ গুণাঙ্ক, \\(\\mu = 0.1\\)
+\\[ F = mg(\\sin\\theta + \\mu\\cos\\theta) = 20 \\times 9.8 \\times (\\sin 30^\\circ + 0.1 \\cos 30^\\circ) = 196 \\times 0.5866 = \\mathbf{114.97\\text{ N}} \\]
+\\(\\therefore\\) আনত তল বরাবর প্রযুক্ত বল \\(\\mathbf{114.97\\text{ N}}\\)।
+
+\\(\\underline{\\textbf{(ঘ) এর সমাধান:}}\\\\
+\\) সময় \\(t = 2\\text{ min} = 120\\text{ s}\\)
+১ম শ্রমিকের ক্ষেত্রে: মোট ভর \\(M_1 = 50 + 20 = 70\\text{ kg}\\)
+\\[ F_1 = 70 \\times 9.8 \\times 0.5866 = 402.41\\text{ N} \\]
+\\[ W_1 = 402.41 \\times 100 = 40241\\text{ J} \\implies P_1 = \\frac{40241}{120} = \\mathbf{335.34\\text{ W}} \\]
+২য় শ্রমিকের ক্ষেত্রে: কপিকলে শুধু বোঝা তোলা হয়
+\\[ W_2 = mgh = 20 \\times 9.8 \\times 50 = 9800\\text{ J} \\implies P_2 = \\frac{9800}{120} = \\mathbf{81.67\\text{ W}} \\]
+যেহেতু \\(P_2 < P_1\\), ২য় শ্রমিক অনেক কম ক্ষমতা ব্যয়ে পৌঁছাতে পেরেছিল।`
+      },
+      {
+        id: "q02",
+        subject: "HSC Physics 1st Paper",
+        chapter: "Chapter 05: Work, Energy & Power",
+        topic: "T-03: Work Done in Emptying a Well & Efficiency",
+        type: "CQ",
+        boardTag: "[Dhaka B'23; Dinaj.B'22; JB'19]",
+        stem: "\\(20\\text{ m}\\) গভীর এবং \\(2\\text{ m}\\) ব্যাসবিশিষ্ট একটি কুয়া পানি দ্বারা পূর্ণ আছে। একটি \\(5\\text{ HP}\\) ক্ষমতার পাম্প দিয়ে কুয়াটির উপরের অর্ধেক পানি \\(20\\text{ minute}\\)-এ খালি করা যায়। অতঃপর পাম্পটি নষ্ট হওয়ায় অন্য একটি পাম্প লাগিয়ে বাকি অর্ধেক পানি খালি করতে আরও \\(25\\text{ minute}\\) সময় লাগল। \\([1\\text{ HP} = 746\\text{ W},\\, \\rho = 1000\\text{ kg/m}^3,\\, g = 9.8\\text{ ms}^{-2}]\\)",
+        svgDiagram: `<svg viewBox="0 0 320 180" style="width:100%;max-width:280px;display:block;margin:auto;" xmlns="http://www.w3.org/2000/svg">
+          <line x1="20" y1="25" x2="300" y2="25" stroke="#334155" stroke-width="3" />
+          <rect x="100" y="25" width="120" height="140" fill="#f8fafc" stroke="#475569" stroke-width="2" />
+          <rect x="101" y="26" width="118" height="69" fill="#93c5fd" opacity="0.85" />
+          <rect x="101" y="95" width="118" height="69" fill="#3b82f6" opacity="0.9" />
+          <circle cx="160" cy="60" r="3.5" fill="#c0392b" /><text x="170" y="64" font-size="10" font-weight="bold" fill="#c0392b">h₁ = 5m</text>
+          <circle cx="160" cy="130" r="3.5" fill="#f59e0b" /><text x="170" y="134" font-size="10" font-weight="bold" fill="#78350f">h₂ = 15m</text>
+          <text x="35" y="100" font-size="11" font-weight="bold" fill="#334155">H = 20m</text>
+          <text x="140" y="15" font-size="11" font-weight="bold" fill="#0284c7">d = 2m</text>
+        </svg>`,
+        conceptSummary: "💡 মূল সূত্রাবলী: কুয়ার পানি তোলার কাজ \\(W = m g h_{\\text{avg}}\\), যেখানে \\(h_{\\text{avg}} = \\frac{\\text{আদি} + \\text{শেষ}}{2}\\)। কর্মদক্ষতা \\(\\eta = \\frac{P_{\\text{out}}}{P_{\\text{in}}} \\times 100\\%\\)।",
+        questionText: "(গ) প্রথম পাম্পটির কর্মদক্ষতা (\\(\\eta\\)) নির্ণয় কর। [৩ নম্বর]\n(ঘ) দ্বিতীয় পাম্পটির কার্যকর ক্ষমতা প্রথম পাম্পের তুলনায় বেশি না কম ছিল? গাণিতিক বিশ্লেষণের মাধ্যমে মন্তব্য কর। [৪ নম্বর]",
+        solution: `\\(\\underline{\\textbf{(গ) এর সমাধান:}}\\\\
+\\) অর্ধ কুয়ার পানির ভর,
+\\[ m_1 = \\pi r^2 \\left(\\frac{H}{2}\\right) \\rho = \\pi (1)^2 (10) (1000) = 31415.93\\text{ kg} \\]
+ভরকেন্দ্রের সরণ \\(h_1 = \\frac{0 + 10}{2} = 5\\text{ m}\\)
+\\[ W_1 = 31415.93 \\times 9.8 \\times 5 = 1{,}539{,}380.57\\text{ J} \\]
+\\[ P_{\\text{out},1} = \\frac{W_1}{1200} = 1282.82\\text{ W} \\]
+\\[ \\eta = \\frac{1282.82}{5 \\times 746} \\times 100\\% = \\mathbf{34.39\\%} \\]
+
+\\(\\underline{\\textbf{(ঘ) এর সমাধান:}}\\\\
+\\) বাকি অর্ধের ভরকেন্দ্রের সরণ \\(h_2 = \\frac{10 + 20}{2} = 15\\text{ m}\\)
+\\[ W_2 = 31415.93 \\times 9.8 \\times 15 = 4{,}618{,}141.7\\text{ J} \\]
+\\[ P_{\\text{out},2} = \\frac{4618141.7}{25 \\times 60} = \\frac{4618141.7}{1500} = \\mathbf{3078.76\\text{ W}} \\]
+যেহেতু \\(3078.76\\text{ W} > 1282.82\\text{ W}\\), দ্বিতীয় পাম্পটির কার্যকর ক্ষমতা \\(1795.94\\text{ W}\\) বেশি ছিল।`
+      },
+      {
+        id: "mcq01",
+        subject: "HSC Physics 1st Paper",
+        chapter: "Chapter 01: Physical World & Measurement",
+        topic: "T-02: Vernier & Screw Gauge Precision",
+        type: "MCQ",
+        boardTag: "[All Board'22; CB'23]",
+        stem: "একটি স্ক্রু গজের বৃত্তাকার স্কেলের মোট ভাগ সংখ্যা \\(100\\) এবং পিচ \\(1\\text{ mm}\\)। একটি ধাতব তারের ব্যাস পরিমাপের সময় রৈখিক স্কেল পাঠ পাওয়া গেল \\(3\\text{ mm}\\) এবং বৃত্তাকার স্কেলের দাগ পাঠ \\(52\\)। যন্ত্রটিতে কোনো শূন্য ত্রুটি নেই। তারটির ব্যাস কত?",
+        svgDiagram: `<svg viewBox="0 0 280 90" style="width:100%;max-width:260px;display:block;margin:auto;" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="25" width="120" height="36" rx="3" fill="#f1f5f9" stroke="#334155" stroke-width="2" />
+          <line x1="25" y1="43" x2="140" y2="43" stroke="#0f172a" stroke-width="1.5" />
+          <line x1="35" y1="35" x2="35" y2="43" stroke="#0f172a" stroke-width="1.5" /><text x="32" y="32" font-size="8">0</text>
+          <line x1="60" y1="35" x2="60" y2="43" stroke="#0f172a" stroke-width="1.5" /><text x="57" y="32" font-size="8">1</text>
+          <line x1="85" y1="35" x2="85" y2="43" stroke="#0f172a" stroke-width="1.5" /><text x="82" y="32" font-size="8">2</text>
+          <line x1="110" y1="35" x2="110" y2="43" stroke="#0f172a" stroke-width="1.5" /><text x="107" y="32" font-size="8">3</text>
+          <path d="M 120 18 L 190 18 L 190 68 L 120 68 Z" fill="#e2e8f0" stroke="#334155" stroke-width="2" />
+          <line x1="120" y1="43" x2="140" y2="43" stroke="#c0392b" stroke-width="2" />
+          <text x="145" y="46" font-size="10" font-weight="bold" fill="#c0392b">52</text>
+        </svg>`,
+        conceptSummary: "💡 মূল সূত্র: লঘিষ্ঠ গণন \\(LC = \\frac{\\text{Pitch}}{\\text{CSD}}\\) এবং মোট পাঠ \\(d = L + (CS \\times LC)\\)।",
+        questionText: "সঠিক উত্তরটি নির্বাচন কর:",
+        options: {
+          a: "3.52\\text{ cm}",
+          b: "3.52\\text{ mm}",
+          c: "3.052\\text{ mm}",
+          d: "0.352\\text{ mm}"
+        },
+        correctOption: "b",
+        solution: `লঘিষ্ঠ গণন \\(LC = \\frac{1\\text{ mm}}{100} = 0.01\\text{ mm}\\)
+মোট ব্যাস \\(d = 3\\text{ mm} + (52 \\times 0.01\\text{ mm}) = \\mathbf{3.52\\text{ mm}}\\)
+সঠিক উত্তর: **(b) 3.52 mm**।`
+      }
+    ];
+
+    // State
+    let currentTheme = "uddvash";
+    let selectedIds = new Set();
+    let searchKeyword = "";
+    let selectedChapter = "all";
+    let selectedType = "all";
+    let userAnswers = {}; // { questionId: selectedOption }
+    let openSolutions = {}; // { questionId: boolean }
+
+    // DOM Elements
+    const mainContainer = document.getElementById("mainContainer");
+    const themeSelect = document.getElementById("themeSelect");
+    const idInput = document.getElementById("idInput");
+    const searchInput = document.getElementById("searchInput");
+    const chapterSelect = document.getElementById("chapterSelect");
+    const typeSelect = document.getElementById("typeSelect");
+    const resetFiltersBtn = document.getElementById("resetFiltersBtn");
+    const printBtn = document.getElementById("printBtn");
+    const questionCount = document.getElementById("questionCount");
+    const currentViewIndicator = document.getElementById("currentViewIndicator");
+    const quickIdChips = document.getElementById("quickIdChips");
+
+    // Modal elements
+    const addQBtn = document.getElementById("addQBtn");
+    const questionModal = document.getElementById("questionModal");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+    const cancelModalBtn = document.getElementById("cancelModalBtn");
+    const addQuestionForm = document.getElementById("addQuestionForm");
+
+    // Offline LaTeX parsing engine when running without internet
+    function parseLatexOffline(str) {
+      if (!str) return '';
+      str = str.replace(/\\\\\\\\/g, '<br/>').replace(/\\\\/g, '<br/>');
+      str = str.replace(/\\textbf\{([^{}]+)\}/g, '<strong>$1</strong>');
+      str = str.replace(/\\mathbf\{([^{}]+)\}/g, '<strong>$1</strong>');
+      str = str.replace(/\\bold\{([^{}]+)\}/g, '<strong>$1</strong>');
+      str = str.replace(/\\underline\{([^{}]+)\}/g, '<u>$1</u>');
+      str = str.replace(/\\text\{([^{}]+)\}/g, '$1');
+      str = str.replace(/\\left\(/g, '(').replace(/\\right\)/g, ')');
+      str = str.replace(/\\left\[/g, '[').replace(/\\right\]/g, ']');
+      str = str.replace(/\\quad/g, '&nbsp;&nbsp;').replace(/\\qquad/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
+      
+      // Greek symbols
+      str = str.replace(/\\theta/g, 'θ').replace(/\\mu/g, 'μ').replace(/\\pi/g, 'π').replace(/\\rho/g, 'ρ').replace(/\\eta/g, 'η');
+      str = str.replace(/\\alpha/g, 'α').replace(/\\beta/g, 'β').replace(/\\gamma/g, 'γ').replace(/\\lambda/g, 'λ');
+      str = str.replace(/\\omega/g, 'ω').replace(/\\Omega/g, 'Ω').replace(/\\Delta/g, 'Δ').replace(/\\Sigma/g, 'Σ');
+      
+      // Math operators & relations
+      str = str.replace(/\\times/g, ' × ').replace(/\\cdot/g, ' · ').replace(/\\div/g, ' ÷ ');
+      str = str.replace(/\\pm/g, ' ± ').replace(/\\approx/g, ' ≈ ');
+      str = str.replace(/\\le/g, ' ≤ ').replace(/\\ge/g, ' ≥ ').replace(/\\ne/g, ' ≠ ').replace(/\\sim/g, ' ~ ');
+      str = str.replace(/\\implies/g, ' ⇒ ').replace(/\\therefore/g, ' ∴ ').replace(/\\circ/g, '°').replace(/\\infty/g, '∞');
+      str = str.replace(/\\vec\{([A-Za-z]+)\}/g, '$1⃗');
+      str = str.replace(/\\sqrt\{([^{}]+)\}/g, '√<span class="radicand">$1</span>');
+      
+      // Vertical fractions
+      let loop = 0;
+      while (/\\frac\{([^{}]+)\}\{([^{}]+)\}/.test(str) && loop < 8) {
+        str = str.replace(/\\frac\{([^{}]+)\}\{([^{}]+)\}/g, '<span class="vfrac"><span class="vnum">$1</span><span class="vden">$2</span></span>');
+        loop++;
+      }
+      
+      // Powers & Indices
+      str = str.replace(/\^\{([^{}]+)\}/g, '<sup>$1</sup>').replace(/\^([0-9a-zA-Z°\-]+)/g, '<sup>$1</sup>');
+      str = str.replace(/_\{([^{}]+)\}/g, '<sub>$1</sub>').replace(/_([0-9a-zA-Z\-]+)/g, '<sub>$1</sub>');
+      str = str.replace(/\\\[([\s\S]*?)\\\]/g, '<div style="margin:6px 0;text-align:center;">$1</div>');
+      str = str.replace(/\\\(([\s\S]*?)\\\)/g, '<span>$1</span>');
+      return str;
+    }
+
+    function runOfflineFallback() {
+      mainContainer.querySelectorAll('.stem-text, .question-prompts, .concept-box, .mcq-option-item, .interactive-option-btn, .solution-box div').forEach(el => {
+        if (!el.dataset.offlineRendered && (el.innerHTML.includes('\\(') || el.innerHTML.includes('\\[') || el.innerHTML.includes('\\frac'))) {
+          el.innerHTML = parseLatexOffline(el.innerHTML);
+          el.dataset.offlineRendered = 'true';
+        }
+      });
+    }
+
+    // Trigger MathJax 3 with fallback to Offline Parser
+    function retypesetMath() {
+      if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
+        window.MathJax.typesetPromise([mainContainer]).catch(function (err) {
+          console.warn("MathJax notice, running offline engine:", err);
+          runOfflineFallback();
+        });
+      } else {
+        runOfflineFallback();
+      }
+    }
+
+    // Populate Filters
+    function initFilters() {
+      // Chapters
+      const chapters = [...new Set(questionDatabase.map(q => q.chapter))];
+      chapterSelect.innerHTML = '<option value="all">সকল অধ্যায় (All Chapters)</option>';
+      chapters.forEach(ch => {
+        const opt = document.createElement("option");
+        opt.value = ch;
+        opt.textContent = ch;
+        chapterSelect.appendChild(opt);
+      });
+
+      // Quick ID chips
+      renderQuickChips();
+    }
+
+    function renderQuickChips() {
+      quickIdChips.innerHTML = "";
+      questionDatabase.forEach(q => {
+        const chip = document.createElement("span");
+        chip.className = "id-chip" + (selectedIds.has(q.id) ? " active" : "");
+        chip.textContent = q.id;
+        chip.onclick = () => {
+          if (selectedIds.has(q.id)) {
+            selectedIds.delete(q.id);
+          } else {
+            selectedIds.add(q.id);
+          }
+          idInput.value = Array.from(selectedIds).join(", ");
+          renderQuickChips();
+          renderQuestions();
+        };
+        quickIdChips.appendChild(chip);
+      });
+    }
+
+    // Filter Logic
+    function getFilteredQuestions() {
+      return questionDatabase.filter(q => {
+        // ID filter
+        if (selectedIds.size > 0 && !selectedIds.has(q.id)) {
+          return false;
+        }
+        // Chapter filter
+        if (selectedChapter !== "all" && q.chapter !== selectedChapter) {
+          return false;
+        }
+        // Type filter
+        if (selectedType !== "all" && q.type !== selectedType) {
+          return false;
+        }
+        // Search query
+        if (searchKeyword.trim() !== "") {
+          const kw = searchKeyword.toLowerCase();
+          const match = q.stem.toLowerCase().includes(kw) ||
+                        q.questionText.toLowerCase().includes(kw) ||
+                        q.topic.toLowerCase().includes(kw) ||
+                        q.boardTag.toLowerCase().includes(kw) ||
+                        q.id.toLowerCase().includes(kw);
+          if (!match) return false;
+        }
+        return true;
+      });
+    }
+
+    // Main Renderer
+    function renderQuestions() {
+      const list = getFilteredQuestions();
+      questionCount.textContent = list.length;
+
+      if (list.length === 0) {
+        mainContainer.innerHTML = `
+          <div style="text-align: center; padding: 48px; background: white; border-radius: 12px; border: 1px dashed #cbd5e1;">
+            <p style="font-size: 1.1rem; color: #64748b; font-weight: 500;">কোনো প্রশ্ন পাওয়া যায়নি। ফিল্টার পরিবর্তন করে পুনরায় চেষ্টা করুন।</p>
+          </div>
+        `;
+        return;
+      }
+
+      if (currentTheme === "uddvash") {
+        currentViewIndicator.textContent = "উদ্ভাস ২-কলাম ভিউ";
+        renderUddvashView(list);
+      } else if (currentTheme === "practice") {
+        currentViewIndicator.textContent = "ইন্টারঅ্যাক্টিভ অনুশীলন মোড";
+        renderPracticeView(list);
+      } else if (currentTheme === "exam") {
+        currentViewIndicator.textContent = "প্রশ্নপত্র মোড";
+        renderExamView(list);
+      }
+
+      retypesetMath();
+    }
+
+    // 🔴 1. Uddvash 2-Column Renderer
+    function renderUddvashView(questions) {
+      const leftCol = [];
+      const rightCol = [];
+      questions.forEach((q, idx) => {
+        if (idx % 2 === 0) leftCol.push(q);
+        else rightCol.push(q);
+      });
+
+      const renderCard = (q, index) => `
+        <div class="uddvash-card" id="card-${q.id}">
+          <div class="topic-ribbon">${q.topic}</div>
+          <div class="question-header-row">
+            <span class="question-badge">${String(index + 1).padStart(2, '0')}.</span>
+            <span class="board-tag">${q.boardTag}</span>
+          </div>
+          <div class="stem-text">${q.stem}</div>
+          ${q.svgDiagram ? `<div class="diagram-box">${q.svgDiagram}</div>` : ""}
+          ${q.conceptSummary ? `<div class="concept-box">${q.conceptSummary}</div>` : ""}
+          <div class="question-prompts">${q.questionText}</div>
+          
+          ${q.type === 'MCQ' && q.options ? `
+            <div class="mcq-options-grid">
+              <div class="mcq-option-item"><strong>(ক)</strong> \\(${q.options.a}\\)</div>
+              <div class="mcq-option-item"><strong>(খ)</strong> \\(${q.options.b}\\)</div>
+              <div class="mcq-option-item"><strong>(গ)</strong> \\(${q.options.c}\\)</div>
+              <div class="mcq-option-item"><strong>(ঘ)</strong> \\(${q.options.d}\\)</div>
+            </div>
+          ` : ""}
+
+          <div class="solution-box">
+            <div class="solution-header">📌 সমাধান ও বিস্তারিত ব্যাখ্যা:</div>
+            <div style="line-height: 1.5;">${q.solution}</div>
+          </div>
+        </div>
+      `;
+
+      mainContainer.innerHTML = `
+        <div class="uddvash-view">
+          <div class="uddvash-banner">
+            <div>
+              <div class="uddvash-banner-title">পদার্থবিজ্ঞান ১ম পত্র • প্রশ্নব্যাংক সমাধান সংকলন</div>
+              <div class="uddvash-banner-meta">${questions[0]?.chapter || "এইচএসসি পদার্থবিজ্ঞান"} | বোর্ড প্রশ্ন ও ব্যাখ্যা</div>
+            </div>
+            <div style="font-weight: 700; font-size: 0.95rem; border: 1px solid rgba(255,255,255,0.4); padding: 4px 10px; border-radius: 4px;">
+              উদ্ভাসের বিশেষ প্রকাশনা
+            </div>
+          </div>
+
+          <div class="uddvash-grid">
+            <div class="uddvash-column">
+              ${leftCol.map((q, i) => renderCard(q, i * 2)).join("")}
+            </div>
+            <div class="uddvash-column-divider"></div>
+            <div class="uddvash-column">
+              ${rightCol.map((q, i) => renderCard(q, i * 2 + 1)).join("")}
+            </div>
+          </div>
+
+          <div class="uddvash-footer-branding">
+            <span>পদার্থবিজ্ঞান ১ম পত্র | পরিবর্তনের প্রত্যয়ে নিরন্তর পথচলা...</span>
+            <span>পৃষ্ঠা নং: ০১</span>
+          </div>
+        </div>
+      `;
+    }
+
+    // 💡 2. Interactive Practice Mode Renderer
+    function renderPracticeView(questions) {
+      mainContainer.innerHTML = `
+        <div class="practice-view">
+          ${questions.map((q, index) => {
+            const isSolOpen = !!openSolutions[q.id];
+            const userAnswer = userAnswers[q.id];
+
+            return `
+              <div class="practice-card" id="practice-${q.id}">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                  <span class="topic-ribbon">${q.topic}</span>
+                  <span class="board-tag">${q.boardTag}</span>
+                </div>
+                <h3 style="font-size: 1.1rem; margin-bottom: 8px; font-weight: 700;">
+                  প্রশ্ন ${index + 1} (${q.type}) <span style="font-size: 0.8rem; color: #64748b; font-family: monospace;">[ID: ${q.id}]</span>
+                </h3>
+                <div class="stem-text">${q.stem}</div>
+                ${q.svgDiagram ? `<div class="diagram-box">${q.svgDiagram}</div>` : ""}
+                <div class="question-prompts">${q.questionText}</div>
+
+                ${q.type === 'MCQ' && q.options ? `
+                  <div class="interactive-mcq-grid">
+                    ${['a', 'b', 'c', 'd'].map(optKey => {
+                      let statusClass = "";
+                      if (userAnswer) {
+                        if (optKey === q.correctOption) statusClass = "correct";
+                        else if (optKey === userAnswer) statusClass = "wrong";
+                      }
+                      return `
+                        <button class="interactive-option-btn ${statusClass}" 
+                                onclick="handleOptionSelect('${q.id}', '${optKey}')"
+                                ${userAnswer ? 'disabled' : ''}>
+                          <strong>(${optKey === 'a' ? 'ক' : optKey === 'b' ? 'খ' : optKey === 'c' ? 'গ' : 'ঘ'})</strong>
+                          <span>\\(${q.options[optKey]}\\)</span>
+                        </button>
+                      `;
+                    }).join("")}
+                  </div>
+                  ${userAnswer ? `
+                    <div style="font-size: 0.9rem; margin-top: 8px; font-weight: 600; color: ${userAnswer === q.correctOption ? '#16a34a' : '#dc2626'}">
+                      ${userAnswer === q.correctOption ? '✅ সঠিক উত্তর!' : `❌ ভুল উত্তর। সঠিক উত্তর ছিল (${q.correctOption === 'a' ? 'ক' : q.correctOption === 'b' ? 'খ' : q.correctOption === 'c' ? 'গ' : 'ঘ'})`}
+                    </div>
+                  ` : ''}
+                ` : ""}
+
+                <button class="toggle-sol-btn" onclick="toggleSolution('${q.id}')">
+                  ${isSolOpen ? '🙈 উত্তর ও ব্যাখ্যা লুকান' : '💡 উত্তর দেখুন / Hide Solution'}
+                </button>
+
+                <div id="sol-box-${q.id}" class="solution-box" style="display: ${isSolOpen ? 'block' : 'none'};">
+                  <div class="solution-header">📌 সমাধান ও বিস্তারিত ব্যাখ্যা:</div>
+                  <div style="line-height: 1.5;">${q.solution}</div>
+                </div>
+              </div>
+            `;
+          }).join("")}
+        </div>
+      `;
+    }
+
+    // 📝 3. Exam Paper Generator Mode Renderer
+    function renderExamView(questions) {
+      mainContainer.innerHTML = `
+        <div class="exam-view">
+          <div class="exam-header">
+            <div class="exam-inst-name">উদ্ভাস একাডেমি ও ভর্তি কোচিং</div>
+            <div class="exam-title">সাপ্তাহিক মূল্যায়ন ও অধ্যায়ভিত্তিক পরীক্ষা</div>
+            <div class="exam-meta-row">
+              <span>বিষয়: পদার্থবিজ্ঞান ১ম পত্র</span>
+              <span>পূর্ণমান: ${questions.reduce((sum, q) => sum + (q.type === 'CQ' ? 10 : 1), 0)}</span>
+              <span>সময়: ${questions.length * 15} মিনিট</span>
+            </div>
+          </div>
+
+          <div class="student-fields-box">
+            <span>শিক্ষার্থীর নাম: _______________________</span>
+            <span>রোল: ___________</span>
+            <span>শাখা: ___________</span>
+            <span>তারিখ: ___________</span>
+          </div>
+
+          <div>
+            ${questions.map((q, idx) => `
+              <div class="exam-question-item">
+                <div class="exam-q-number">
+                  <span>প্রশ্ন নং ${idx + 1} (${q.type})</span>
+                  <span>${q.type === 'CQ' ? '[১০ নম্বর]' : '[১ নম্বর]'}</span>
+                </div>
+                <div class="stem-text">${q.stem}</div>
+                ${q.svgDiagram ? `<div class="diagram-box">${q.svgDiagram}</div>` : ""}
+                <div class="question-prompts">${q.questionText}</div>
+                
+                ${q.type === 'MCQ' && q.options ? `
+                  <div class="mcq-options-grid" style="margin-top: 10px;">
+                    <div class="mcq-option-item">(ক) \\(${q.options.a}\\)</div>
+                    <div class="mcq-option-item">(খ) \\(${q.options.b}\\)</div>
+                    <div class="mcq-option-item">(গ) \\(${q.options.c}\\)</div>
+                    <div class="mcq-option-item">(ঘ) \\(${q.options.d}\\)</div>
+                  </div>
+                ` : ""}
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    // Handlers
+    window.handleOptionSelect = function(qId, selectedKey) {
+      userAnswers[qId] = selectedKey;
+      renderQuestions();
+    };
+
+    window.toggleSolution = function(qId) {
+      openSolutions[qId] = !openSolutions[qId];
+      const solEl = document.getElementById(`sol-box-${qId}`);
+      if (solEl) {
+        solEl.style.display = openSolutions[qId] ? "block" : "none";
+        retypesetMath();
+      }
+    };
+
+    // Listeners
+    themeSelect.addEventListener("change", (e) => {
+      currentTheme = e.target.value;
+      renderQuestions();
+    });
+
+    idInput.addEventListener("input", (e) => {
+      const raw = e.target.value;
+      const ids = raw.split(/[\s,]+/).map(s => s.trim()).filter(Boolean);
+      selectedIds = new Set(ids);
+      renderQuickChips();
+      renderQuestions();
+    });
+
+    searchInput.addEventListener("input", (e) => {
+      searchKeyword = e.target.value;
+      renderQuestions();
+    });
+
+    chapterSelect.addEventListener("change", (e) => {
+      selectedChapter = e.target.value;
+      renderQuestions();
+    });
+
+    typeSelect.addEventListener("change", (e) => {
+      selectedType = e.target.value;
+      renderQuestions();
+    });
+
+    resetFiltersBtn.addEventListener("click", () => {
+      selectedIds.clear();
+      searchKeyword = "";
+      selectedChapter = "all";
+      selectedType = "all";
+      idInput.value = "";
+      searchInput.value = "";
+      chapterSelect.value = "all";
+      typeSelect.value = "all";
+      renderQuickChips();
+      renderQuestions();
+    });
+
+    printBtn.addEventListener("click", () => {
+      window.print();
+    });
+
+    // Modal Add Question
+    addQBtn.addEventListener("click", () => {
+      questionModal.classList.add("active");
+    });
+    closeModalBtn.addEventListener("click", () => {
+      questionModal.classList.remove("active");
+    });
+    cancelModalBtn.addEventListener("click", () => {
+      questionModal.classList.remove("active");
+    });
+
+    addQuestionForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const newQuestion = {
+        id: document.getElementById("newId").value.trim(),
+        subject: "HSC Physics 1st Paper",
+        chapter: document.getElementById("newChapter").value.trim(),
+        topic: "T-Custom: সাধারণ সমস্যা",
+        type: document.getElementById("newType").value,
+        boardTag: document.getElementById("newBoard").value.trim() || "[Custom 2026]",
+        stem: document.getElementById("newStem").value.trim(),
+        questionText: document.getElementById("newQuestionText").value.trim(),
+        solution: document.getElementById("newSolution").value.trim(),
+        conceptSummary: "💡 সূত্রাবলী: প্রযোজ্য মূল সূত্রসমূহ অনুসরণ কর।"
+      };
+
+      questionDatabase.unshift(newQuestion);
+      initFilters();
+      renderQuestions();
+      addQuestionForm.reset();
+      questionModal.classList.remove("active");
+    });
+
+    // Initial Execution
+    initFilters();
+    renderQuestions();
+  </script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --uddvash-red: #c0392b;
+    --uddvash-dark-red: #962d22;
+    --uddvash-pink: #fdedec;
+    --uddvash-pink-border: #f5b7b1;
+    --uddvash-orange: #d35400;
+  }
+}
+
+/* Custom Typography & MathJax enhancements */
+body {
+  font-family: 'Hind Siliguri', 'Kalpurush', 'SolaimanLipi', 'Siyam Rupali', 'Vrinda', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.mathjax-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+}
+
+.mathjax-container mjx-container {
+  margin: 0.25em 0 !important;
+  outline: none !important;
+}
+
+/* Offline Vertical Fraction & Math Styles */
+.vfrac {
+  display: inline-flex;
+  flex-direction: column;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 0.88em;
+  line-height: 1.1;
+  margin: 0 3px;
+}
+.vnum {
+  border-bottom: 1.5px solid currentColor;
+  padding: 0 3px 1px 3px;
+}
+.vden {
+  padding: 1px 3px 0 3px;
+}
+.radicand {
+  border-top: 1.5px solid currentColor;
+  padding: 0 2px;
+}
+
+/* Smooth transitions */
+.transition-all-fast {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* A4 Print Layout Rules */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm 10mm 12mm 10mm;
+  }
+
+  body {
+    background-color: #ffffff !important;
+    color: #111827 !important;
+    font-size: 11pt !important;
+    line-height: 1.4 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Hide UI elements during print */
+  .no-print,
+  header,
+  nav,
+  .control-panel,
+  .modal-backdrop,
+  button,
+  input,
+  select,
+  .toast-container {
+    display: none !important;
+  }
+
+  /* Print container resets */
+  .print-area {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* Prevent question cut-offs across page breaks */
+  .question-card,
+  .break-inside-avoid {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    margin-bottom: 12px !important;
+  }
+
+  /* Ensure 2-column Uddvash grid prints correctly */
+  .uddvash-columns {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 16px !important;
+    position: relative !important;
+  }
+
+  /* Divider line for 2 columns */
+  .uddvash-divider {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background-color: #c0392b !important;
+    transform: translateX(-50%);
+  }
+
+  /* Force background colors in print */
+  .bg-print-pink {
+    background-color: #fdedec !important;
+  }
+  .bg-print-red {
+    background-color: #c0392b !important;
+    color: #ffffff !important;
+  }
+  .border-print-red {
+    border-color: #c0392b !important;
+  }
+}

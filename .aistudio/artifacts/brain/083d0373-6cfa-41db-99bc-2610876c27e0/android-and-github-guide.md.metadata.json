@@ -1,0 +1,5 @@
+{
+  "summary":  "Comprehensive guide for zero-terminal Android deployment. Details how mobile users can push to GitHub, trigger the automated GitHub Actions APK builder workflow in the cloud, download the compiled .apk directly on Android, and use SQLite (.sql / .db) files.",
+  "updatedAt":  "2026-10-21T03:18:42.755932725Z",
+  "userFacing":  true
+}
